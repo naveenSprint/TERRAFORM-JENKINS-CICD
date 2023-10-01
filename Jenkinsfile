@@ -5,7 +5,7 @@ pipeline{
         terraform 'terraform'
     }
     environment {
-        SCANNER_HOME=tool 'sonar-scanner'
+        SCANNER_HOME=tool 'sonarqube-scanner'
     }
     stages{
         stage('clean Workspace'){
@@ -43,6 +43,7 @@ pipeline{
                 sh "trivy fs . > trivyfs.txt"
             }
         }
+        
         stage('Excutable permission to userdata'){
             steps{
                 sh 'chmod 777 website.sh'
@@ -58,9 +59,9 @@ pipeline{
                 sh 'terraform plan'
             }
         }
-        stage('Terraform apply'){
+                stage('Terraform apply'){
             steps{
-                sh 'terraform ${action} --auto approve'
+                sh 'terraform apply --auto-approve'
             }
         }
     }
